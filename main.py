@@ -44,11 +44,9 @@ def today_plan(message):
 
 @bot.message_handler(commands=["plan"])
 def full_plan(message):
-    text = "План на неделю:\n
-"
+    text = "План на неделю:\n"
     for day, (morning, evening) in schedule_plan.items():
-        text += f"{day}: 🌞 {morning} / 🌙 {evening}
-"
+        text += f"{day}: 🌞 {morning} / 🌙 {evening}"
     bot.send_message(message.chat.id, text)
 
 @bot.message_handler(commands=["tip"])
