@@ -14,8 +14,11 @@ import os
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
 
+# Запуск
+threading.Thread(target=scheduler, daemon=True).start()
 bot.remove_webhook()
-bot = telebot.TeleBot(TOKEN)
+bot.polling()
+
 
 tips = [
     "Меняй зубную щётку каждые 3 месяца.",
