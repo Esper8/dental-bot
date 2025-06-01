@@ -14,8 +14,8 @@ import os
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
 
-bot = telebot.TeleBot(TOKEN)
 bot.remove_webhook()
+bot = telebot.TeleBot(TOKEN)
 
 tips = [
     "Меняй зубную щётку каждые 3 месяца.",
