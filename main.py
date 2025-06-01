@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 import json
 import os
 
-TOKEN = "8187925078:AAFHnjRxLuqajMkZ_06mwgyFiqED8pHEDCY"
 bot = telebot.TeleBot(TOKEN)
 bot.remove_webhook()
 
