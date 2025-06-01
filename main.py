@@ -1,7 +1,6 @@
 
-import teleb
+import telebot
 memes = ['https://i.imgur.com/1JucVTA.jpeg', 'https://i.imgur.com/hRdb8Z9.jpeg', 'https://i.imgur.com/bwz9hXU.jpeg', 'https://i.imgur.com/3RY2dXK.jpeg', 'https://i.imgur.com/pDO53eq.jpeg', 'https://i.imgur.com/ti15oHJ.jpeg']
-ot
 from telebot import types
 import json
 import os
@@ -76,8 +75,7 @@ def get_evening_time(message, day, morning):
     next_day_index = (DAYS.index(day) + 1) % 7
     next_day = DAYS[next_day_index]
 
-    bot.send_message(message.chat.id, f"✅ Установлено на {day}:
-Утро — {morning}, Вечер — {evening}")
+    bot.send_message(message.chat.id, f"✅ Установлено на {day}:\n🌞Утро — {morning}, 🌙Вечер — {evening}", reply_markup=markup)
 
     markup = types.InlineKeyboardMarkup()
     markup.add(
