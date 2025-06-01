@@ -86,8 +86,7 @@ def set_time(call):
         evening = users[cid][day]["evening"]
         next_index = (DAYS.index(day) + 1) % 7
         next_day = DAYS[next_index]
-        bot.send_message(call.message.chat.id, f"✅ Установлено на {day}:
-Утро — {morning}, Вечер — {evening}")
+        bot.send_message(call.message.chat.id, f"✅ Установлено на {day}:\nУтро — {morning}, Вечер — {evening}")
         markup = types.InlineKeyboardMarkup()
         markup.add(
             types.InlineKeyboardButton(f"📅 На {next_day}", callback_data=f"set_day:{next_day}"),
