@@ -1,4 +1,3 @@
-
 import telebot
 import schedule
 import time
@@ -8,6 +7,7 @@ from datetime import datetime
 
 TOKEN = "8187925078:AAFxC8nDvloidqMf-DNgd7Dt2yvRbZdvou4"
 bot = telebot.TeleBot(TOKEN)
+bot.remove_webhook()
 
 chat_id = None
 
