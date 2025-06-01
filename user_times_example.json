@@ -1,32 +1,62 @@
 {
     "123456789": {
         "Monday": {
-            "morning": "07:45",
-            "evening": "21:15"
+            "morning": "07:30",
+            "evening": "22:00"
         },
         "Tuesday": {
             "morning": "08:00",
-            "evening": "21:00"
+            "evening": "21:30"
         },
         "Wednesday": {
-            "morning": "07:30",
-            "evening": "22:00"
+            "morning": "07:45",
+            "evening": "22:15"
         },
         "Thursday": {
-            "morning": "07:30",
-            "evening": "22:00"
+            "morning": "07:00",
+            "evening": "21:00"
         },
         "Friday": {
-            "morning": "07:30",
-            "evening": "22:00"
+            "morning": "08:30",
+            "evening": "22:30"
         },
         "Saturday": {
             "morning": "09:00",
             "evening": "23:00"
         },
         "Sunday": {
-            "morning": "09:00",
-            "evening": "22:30"
+            "morning": "09:30",
+            "evening": "22:00"
+        }
+    },
+    "987654321": {
+        "Monday": {
+            "morning": "06:30",
+            "evening": "20:00"
+        },
+        "Tuesday": {
+            "morning": "06:30",
+            "evening": "20:00"
+        },
+        "Wednesday": {
+            "morning": "06:30",
+            "evening": "20:00"
+        },
+        "Thursday": {
+            "morning": "06:30",
+            "evening": "20:00"
+        },
+        "Friday": {
+            "morning": "06:30",
+            "evening": "20:00"
+        },
+        "Saturday": {
+            "morning": "08:00",
+            "evening": "22:00"
+        },
+        "Sunday": {
+            "morning": "08:00",
+            "evening": "22:00"
         }
     }
 }
