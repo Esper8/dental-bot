@@ -1,5 +1,5 @@
 
-import teleb
+import telebot
 memes = ['https://i.imgur.com/1JucVTA.jpeg', 'https://i.imgur.com/hRdb8Z9.jpeg', 'https://i.imgur.com/bwz9hXU.jpeg', 'https://i.imgur.com/3RY2dXK.jpeg', 'https://i.imgur.com/pDO53eq.jpeg', 'https://i.imgur.com/ti15oHJ.jpeg']
 ot
 from telebot import types
