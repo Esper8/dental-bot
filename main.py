@@ -8,6 +8,12 @@ from datetime import datetime, timedelta
 import json
 import os
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+TOKEN = os.getenv("TOKEN")
+
 bot = telebot.TeleBot(TOKEN)
 bot.remove_webhook()
 
