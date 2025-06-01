@@ -1,194 +1,119 @@
 
-import telebot
-import threading
-import time
-import random
+import teleb
+memes = ['https://i.imgur.com/1JucVTA.jpeg', 'https://i.imgur.com/hRdb8Z9.jpeg', 'https://i.imgur.com/bwz9hXU.jpeg', 'https://i.imgur.com/3RY2dXK.jpeg', 'https://i.imgur.com/pDO53eq.jpeg', 'https://i.imgur.com/ti15oHJ.jpeg']
+ot
 from telebot import types
-from datetime import datetime, timedelta
 import json
 import os
+import threading
+from datetime import datetime
 
-TOKEN = "8187925078:AAFHnjRxLuqajMkZ_06mwgyFiqED8pHEDCY"
+from dotenv import load_dotenv
+load_dotenv()
+TOKEN = os.getenv("TOKEN")
+
 bot = telebot.TeleBot(TOKEN)
-bot.remove_webhook()
 
-tips = [
-    "Меняй зубную щётку каждые 3 месяца.",
-    "Чисти зубы не менее 2 минут.",
-    "Не забывай про язык — на нём скапливаются бактерии.",
-    "Полоскай рот после еды, если не можешь сразу почистить зубы.",
-    "Используй зубную нить или ирригатор каждый вечер.",
-    "Не надави слишком сильно — это портит эмаль.",
-    "Избегай сладостей перед сном, если не планируешь чистить зубы.",
-    "Регулярно посещай стоматолога, даже если всё в порядке.",
-    "Не забывай про чистку задних зубов — они страдают чаще всего.",
-    "Полезно заканчивать чистку ополаскивателем без спирта."
-]
+DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+DEFAULT_TIME = {"morning": "07:30", "evening": "22:30"}
+SETTINGS_FILE = "users.json"
 
-days_ru = {
-    "Monday": "Понедельник",
-    "Tuesday": "Вторник",
-    "Wednesday": "Среда",
-    "Thursday": "Четверг",
-    "Friday": "Пятница",
-    "Saturday": "Суббота",
-    "Sunday": "Воскресенье"
-}
-
-language = {"ru": "Русский", "en": "English"}
-user_lang = {}
-
-def get_lang(chat_id):
-    return user_lang.get(str(chat_id), "ru")
-
-def translate(msg_ru, msg_en, chat_id):
-    return msg_ru if get_lang(chat_id) == "ru" else msg_en
-
-@bot.message_handler(commands=['start'])
-def start(message):
-    cid = str(message.chat.id)
-    save_user(cid)
-    bot.send_message(
-        message.chat.id,
-        translate(
-            "🦷 Привет! Я — DentalCoachBot.\n\nКоманды:\n/plan — расписание\n/tip — совет\n/stats — статистика\n/lang — язык\n/motivate — мем",
-            "🦷 Hello! I'm DentalCoachBot.\n\nCommands:\n/plan — routine\n/tip — tip\n/stats — stats\n/lang — language\n/motivate — meme",
-            cid
-        )
-    )
-
-@bot.message_handler(commands=['plan'])
-def plan(message):
-    bot.send_message(message.chat.id, translate(
-        "📅 Утром: 07:30\n🌙 Вечером: 22:30",
-        "📅 Morning: 07:30\n🌙 Evening: 22:30",
-        message.chat.id
-    ))
-
-@bot.message_handler(commands=['tip'])
-def send_tip(message):
-    tip = random.choice(tips)
-    bot.send_message(message.chat.id, f"🦷 {translate('Совет стоматолога:', 'Dental tip:', message.chat.id)}\n{tip}")
-
-@bot.message_handler(commands=['lang'])
-def lang(message):
-    cid = str(message.chat.id)
-    current = get_lang(cid)
-    new_lang = "en" if current == "ru" else "ru"
-    user_lang[cid] = new_lang
-    save_langs()
-    bot.send_message(message.chat.id, f"🌍 {translate('Язык переключен на:', 'Language switched to: ', message.chat.id)} {language[new_lang]}")
-
-@bot.message_handler(commands=['motivate'])
-def motivate(message):
-    meme_folder = "memes"
-    files = [f for f in os.listdir(meme_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
-    if files:
-        img_path = os.path.join(meme_folder, random.choice(files))
-        with open(img_path, 'rb') as photo:
-            bot.send_photo(message.chat.id, photo)
-    else:
-        bot.send_message(message.chat.id, translate("Нет мемов 😢", "No memes 😢", message.chat.id))
-
-@bot.message_handler(commands=['stats'])
-def show_stats(message):
-    filename = "stats.json"
-    cid = str(message.chat.id)
-    if not os.path.exists(filename):
-        bot.send_message(message.chat.id, translate("Пока нет статистики.", "No stats yet.", message.chat.id))
-        return
-    with open(filename, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    user_stats = data.get(cid, {})
-    now = datetime.now()
-    last_7_days = [(now - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(6, -1, -1)]
-    msg = "📊\n"
-    total = 0
-    for day in last_7_days:
-        count = user_stats.get(day, 0)
-        pretty_date = datetime.strptime(day, "%Y-%m-%d").strftime("%d.%m (%a)")
-        msg += f"{pretty_date}: {count} 🪥\n"
-        total += count
-    msg += f"🔥 {translate('Всего:', 'Total:', message.chat.id)} {total}"
-    bot.send_message(message.chat.id, msg)
-
-def record_stat(chat_id):
-    today = datetime.now().strftime("%Y-%m-%d")
-    filename = "stats.json"
-    if os.path.exists(filename):
-        with open(filename, "r", encoding="utf-8") as f:
-            data = json.load(f)
-    else:
-        data = {}
-    chat_id = str(chat_id)
-    if chat_id not in data:
-        data[chat_id] = {}
-    data[chat_id][today] = data[chat_id].get(today, 0) + 1
-    with open(filename, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-
-@bot.callback_query_handler(func=lambda call: call.data == "brushed")
-def handle_brushed(call):
-    bot.answer_callback_query(call.id, "Молодец! Так держать 🦷")
-    bot.edit_message_reply_markup(call.message.chat.id, call.message.message_id, reply_markup=None)
-    bot.send_message(call.message.chat.id, "Записал — зубы почищены!")
-    record_stat(call.message.chat.id)
-
-def send_reminder():
-    users = load_users()
-    now = datetime.now()
-    weekday = days_ru[now.strftime("%A")]
-    date_today = now.strftime("%d.%m.%Y")
-    time_label = "🕢 Утро" if now.hour < 12 else "🌙 Вечер"
-    for chat_id in users:
-        tip = random.choice(tips)
-        msg = f"{time_label} — {translate('пора чистить зубы!', 'time to brush!', chat_id)}\n\n📅 {weekday}, {date_today}.\n💡 {tip}"
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("✅ Почистил!", callback_data="brushed"))
-        bot.send_message(chat_id, msg, reply_markup=markup)
-
-def weekly_report():
-    users = load_users()
-    for uid in users:
-        dummy = types.SimpleNamespace()
-        dummy.chat = types.SimpleNamespace()
-        dummy.chat.id = uid
-        show_stats(dummy)
-
-def scheduler():
-    while True:
-        now = datetime.now().strftime("%H:%M")
-        if now == "07:30" or now == "22:30":
-            send_reminder()
-            time.sleep(60)
-        elif now == "20:00" and datetime.now().weekday() == 6:
-            weekly_report()
-            time.sleep(60)
-        time.sleep(5)
-
-def save_user(cid):
-    filename = "users.json"
-    cid = str(cid)
-    if os.path.exists(filename):
-        with open(filename, "r", encoding="utf-8") as f:
-            data = json.load(f)
-    else:
-        data = []
-    if cid not in data:
-        data.append(cid)
-        with open(filename, "w", encoding="utf-8") as f:
-            json.dump(data, f)
 
 def load_users():
-    try:
-        with open("users.json", "r", encoding="utf-8") as f:
-            return json.load(f)
-    except:
-        return []
+    if not os.path.exists(SETTINGS_FILE):
+        return {}
+    with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-def save_langs():
-    with open("langs.json", "w", encoding="utf-8") as f:
-        json.dump(user_lang, f)
 
-threading.Thread(target=scheduler, daemon=True).start()
+def save_users(users):
+    with open(SETTINGS_FILE, "w", encoding="utf-8") as f:
+        json.dump(users, f, indent=2, ensure_ascii=False)
+
+
+@bot.message_handler(commands=["start"])
+def start(message):
+    cid = str(message.chat.id)
+    users = load_users()
+    if cid not in users:
+        users[cid] = {day: DEFAULT_TIME.copy() for day in DAYS}
+        save_users(users)
+    bot.send_message(message.chat.id, "👋 Привет! Я помогу напоминать чистить зубы!")
+    choose_day(message)
+
+
+@bot.message_handler(commands=["settings"])
+def choose_day(message):
+    markup = types.InlineKeyboardMarkup()
+    for day in DAYS:
+        markup.add(types.InlineKeyboardButton(day, callback_data=f"set_day:{day}"))
+    bot.send_message(message.chat.id, "🗓 Выбери день недели для настройки:", reply_markup=markup)
+
+
+@bot.callback_query_handler(func=lambda call: call.data.startswith("set_day:"))
+def set_day(call):
+    day = call.data.split(":")[1]
+    bot.send_message(call.message.chat.id, f"🌅 Укажи время для **утра** в формате HH:MM")
+    bot.register_next_step_handler(call.message, get_morning_time, day)
+
+
+def get_morning_time(message, day):
+    morning = message.text.strip()
+    bot.send_message(message.chat.id, f"🌙 Укажи время для **вечера** в формате HH:MM")
+    bot.register_next_step_handler(message, get_evening_time, day, morning)
+
+
+def get_evening_time(message, day, morning):
+    evening = message.text.strip()
+    cid = str(message.chat.id)
+    users = load_users()
+    if cid not in users:
+        users[cid] = {d: DEFAULT_TIME.copy() for d in DAYS}
+    users[cid][day] = {"morning": morning, "evening": evening}
+    save_users(users)
+
+    # Определим следующий день
+    next_day_index = (DAYS.index(day) + 1) % 7
+    next_day = DAYS[next_day_index]
+
+    bot.send_message(message.chat.id, f"✅ Установлено на {day}:
+Утро — {morning}, Вечер — {evening}")
+
+    markup = types.InlineKeyboardMarkup()
+    markup.add(
+        types.InlineKeyboardButton(f"🔁 На {next_day}", callback_data=f"set_day:{next_day}"),
+        types.InlineKeyboardButton("📅 Другой день", callback_data="choose_day")
+    )
+    bot.send_message(message.chat.id, "Что дальше?", reply_markup=markup)
+
+
+@bot.callback_query_handler(func=lambda call: call.data == "choose_day")
+def back_to_choose(call):
+    choose_day(call.message)
+
+
+def reminder_loop():
+    while True:
+        now = datetime.now().strftime("%H:%M")
+        weekday = datetime.now().strftime("%A")
+        users = load_users()
+        for cid, schedule in users.items():
+            user_day = schedule.get(weekday, DEFAULT_TIME)
+            if now == user_day["morning"]:
+                bot.send_message(cid, "🌞 Доброе утро! Не забудь почистить зубы!")
+            if now == user_day["evening"]:
+                bot.send_message(cid, "🌙 Добрый вечер! Самое время для чистки зубов!")
+        import time
+        time.sleep(60)
+
+
+threading.Thread(target=reminder_loop, daemon=True).start()
+bot.remove_webhook()
+
+@bot.message_handler(commands=["motivate"])
+def send_motivation(message):
+    meme = random.choice(memes)
+    bot.send_photo(message.chat.id, meme, caption="💪 Вот тебе мотивация на день!")
+
+
 bot.polling()
