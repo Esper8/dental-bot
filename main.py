@@ -1,5 +1,7 @@
 
-import telebot
+import teleb
+memes = ['https://i.imgur.com/1JucVTA.jpeg', 'https://i.imgur.com/hRdb8Z9.jpeg', 'https://i.imgur.com/bwz9hXU.jpeg', 'https://i.imgur.com/3RY2dXK.jpeg', 'https://i.imgur.com/pDO53eq.jpeg', 'https://i.imgur.com/ti15oHJ.jpeg']
+ot
 from telebot import types
 import json
 import os
@@ -107,4 +109,11 @@ def reminder_loop():
 
 threading.Thread(target=reminder_loop, daemon=True).start()
 bot.remove_webhook()
+
+@bot.message_handler(commands=["motivate"])
+def send_motivation(message):
+    meme = random.choice(memes)
+    bot.send_photo(message.chat.id, meme, caption="💪 Вот тебе мотивация на день!")
+
+
 bot.polling()
