@@ -1,6 +1,7 @@
 # Игнорировать статистику пользователей
 stats.json
 users.json
+user_times_example.json
 
 # Игнорировать окружение
 __pycache__/
