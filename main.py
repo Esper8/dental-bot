@@ -5,7 +5,7 @@ import threading
 import random
 from datetime import datetime
 
-TOKEN = "8187925078:AAFxC8nDvloidqMf-DNgd7Dt2yvRbZdvou4"
+TOKEN = "8187925078:AAFHnjRxLuqajMkZ_06mwgyFiqED8pHEDCY"
 bot = telebot.TeleBot(TOKEN)
 bot.remove_webhook()
 
