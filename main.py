@@ -76,8 +76,7 @@ def get_evening_time(message, day, morning):
     next_day_index = (DAYS.index(day) + 1) % 7
     next_day = DAYS[next_day_index]
 
-    bot.send_message(message.chat.id, f"✅ Установлено на {day}:
-Утро — {morning}, Вечер — {evening}")
+    bot.send_message(message.chat.id, f"✅ Установлено на {day}:\nУтро — {morning}, Вечер — {evening}", reply_markup=markup)
 
     markup = types.InlineKeyboardMarkup()
     markup.add(
