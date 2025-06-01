@@ -174,6 +174,9 @@ def scheduler():
             time.sleep(60)
         time.sleep(5)
 
+threading.Thread(target=scheduler, daemon=True).start()
+        time.sleep(5)
+
 def save_user(cid):
     filename = "users.json"
     cid = str(cid)
