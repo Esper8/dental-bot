@@ -1,0 +1,32 @@
+{
+    "123456789": {
+        "Monday": {
+            "morning": "07:45",
+            "evening": "21:15"
+        },
+        "Tuesday": {
+            "morning": "08:00",
+            "evening": "21:00"
+        },
+        "Wednesday": {
+            "morning": "07:30",
+            "evening": "22:00"
+        },
+        "Thursday": {
+            "morning": "07:30",
+            "evening": "22:00"
+        },
+        "Friday": {
+            "morning": "07:30",
+            "evening": "22:00"
+        },
+        "Saturday": {
+            "morning": "09:00",
+            "evening": "23:00"
+        },
+        "Sunday": {
+            "morning": "09:00",
+            "evening": "22:30"
+        }
+    }
+}
