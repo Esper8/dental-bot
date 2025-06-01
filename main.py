@@ -44,7 +44,7 @@ def today_plan(message):
 
 @bot.message_handler(commands=["plan"])
 def full_plan(message):
-    text = "🗓 План на неделю:\n"
+    text = "🗓 План на неделю:
 "
     for day, (morning, evening) in schedule_plan.items():
         text += f"{day}: 🌞 {morning} / 🌙 {evening}
