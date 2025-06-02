@@ -61,10 +61,10 @@ def send_welcome(message):
         users[cid] = {}
         save_json(USERS_FILE, users)
     text = LANG["ru"]["start"] + "\n\n" + "Команды:\n" \
-        • "/plan - расписание"\n" \
-        • "/tip - совет"\n" \
-        • "/stats - статистика"\n" \
-        • "/motivate - мем"
+        "/plan - расписание"\n" \
+        "/tip - совет"\n" \
+        "/stats - статистика"\n" \
+        "/motivate - мем"
     bot.send_message(message.chat.id, text)
 
 # ⚖️ Расписание: установка времени
