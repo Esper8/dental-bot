@@ -66,8 +66,6 @@ def send_welcome(message):
         • /stats — статистика
         • /motivate — мем
         """
-bot.send_message(message.chat.id, text)
-
     bot.send_message(message.chat.id, text)
 
 # ⚖️ Расписание: установка времени
