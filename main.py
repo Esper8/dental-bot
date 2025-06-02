@@ -6,6 +6,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from telebot import types
 import random
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # 🚫 Disable webhook (для polling)
 load_dotenv()
