@@ -60,11 +60,14 @@ def send_welcome(message):
     if cid not in users:
         users[cid] = {}
         save_json(USERS_FILE, users)
-    text = LANG["ru"]["start"] + "\n\n" + "Команды:\n" \
-        "/plan - расписание"\n" \
-        "/tip - совет"\n" \
-        "/stats - статистика"\n" \
-        "/motivate - мем"
+    text = LANG["ru"]["start"] + "\n\n" + """Команды:
+        • /plan — расписание
+        • /tip — совет
+        • /stats — статистика
+        • /motivate — мем
+        """
+bot.send_message(message.chat.id, text)
+
     bot.send_message(message.chat.id, text)
 
 # ⚖️ Расписание: установка времени
